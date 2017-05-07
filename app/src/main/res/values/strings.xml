@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Indie Hackers Reader</string>
+    <string name="title_text">INDIE HACKERS</string>
+    <string name="summary_text">Learn from profitable businesses and side projects.</string>
+    <string name="rev_prompt">Revenue</string>
+    <string name="cat_prompt">Categories</string>
+</resources>

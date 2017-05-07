@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:padding="8dp"
+    android:background="@color/colorPrimary"
+    tools:context="ca.danielw.indiehackersreader.MainActivity">
+
+    <TextView
+        android:id="@+id/tvSummary"
+        android:textColor="#ffffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/summary_text"
+        android:gravity="center"
+        android:paddingBottom="8dp"
+        android:textSize="26sp"/>
+
+    <ImageView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:src="@android:drawable/divider_horizontal_dark"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="2dp" />
+
+    <LinearLayout
+        android:id="@+id/filterBar"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ca.danielw.indiehackersreader.NoDefaultSpinner
+            android:id="@+id/revenue_spinner"
+            android:layout_width="wrap_content"
+            android:prompt="@string/rev_prompt"
+            android:layout_height="wrap_content"/>
+
+        <ca.danielw.indiehackersreader.NoDefaultSpinner
+            android:id="@+id/categories_spinner"
+            android:prompt="@string/cat_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </WebView>
+
+</LinearLayout>

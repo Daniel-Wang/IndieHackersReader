@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories_array">
+        <item>Advertising</item>
+        <item>Books</item>
+        <item>Business</item>
+        <item>Communication</item>
+        <item>Content &amp; News</item>
+        <item>E-commerce</item>
+        <item>Education</item>
+        <item>Finance</item>
+        <item>Music &amp; Audio</item>
+        <item>Productivity</item>
+        <item>Tools</item>
+    </string-array>
+</resources>
