@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         revenueFilter.setAdapter(adpRev);
         catFilter.setAdapter(adpCat);
 
+        WebView webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl(BASE_URL);
+
     }
 
     @Override
