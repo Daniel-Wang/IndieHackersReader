@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="revenue_array">
+        <item>All Revenue</item>
         <item>Under $1k per month</item>
         <item>$1k - $8k per month</item>
         <item>$8k - $25k per month</item>

@@ -1,10 +1,15 @@
 package ca.danielw.indiehackersreader;
 
 import android.app.ActionBar;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,10 +19,17 @@ import android.widget.Toast;
 import com.facebook.stetho.Stetho;
 
 public class MainActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener{
-
+    private WebView webView;
     private final String BASE_URL = "https://www.indiehackers.com/businesses";
+    private final String DETAIL_URL = "DETAIL_URL";
     private Spinner revenueFilter;
     private Spinner catFilter;
+
+    private String rev;
+    private String cat;
+
+    private ArrayAdapter<CharSequence> adpRev;
+    ArrayAdapter<CharSequence> adpCat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,31 +46,70 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
 
 
-        ArrayAdapter<CharSequence> adpRev = ArrayAdapter.createFromResource(this, R.array.revenue_array,
+        adpRev = ArrayAdapter.createFromResource(this, R.array.revenue_array,
                 R.layout.spinner_item);
 
-        ArrayAdapter<CharSequence> adpCat = ArrayAdapter.createFromResource(this, R.array.categories_array,
+        adpCat = ArrayAdapter.createFromResource(this, R.array.categories_array,
                 R.layout.spinner_item);
 
         adpRev.setDropDownViewResource(R.layout.spinner_dropdown_item);
         adpCat.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
+        revenueFilter.setOnItemSelectedListener(this);
+        catFilter.setOnItemSelectedListener(this);
+
         revenueFilter.setAdapter(adpRev);
         catFilter.setAdapter(adpCat);
 
-        WebView webView = (WebView) findViewById(R.id.webView);
+        revenueFilter.setSelection(0);
+        catFilter.setSelection(0);
+
+        webView = (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
+
+        webView.setWebViewClient(new MyWebViewClient());
+
         webView.loadUrl(BASE_URL);
 
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String text = parent.getItemAtPosition(position).toString();
+        Log.e("Error", text);
+        if(parent.equals(adpRev)){
+            rev = text;
+        } else {
+            cat = text;
+        }
+        Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    private class MyWebViewClient extends WebViewClient{
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            //webView.loadUrl();
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            if (request.toString().equals(BASE_URL)) {
+                // This is my web site, so do not override; let my WebView load the page
+                return false;
+            }
+            //Render clicks in another webview in the Detail Acitivity
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            intent.putExtra(DETAIL_URL, request.toString());
+            startActivity(intent);
+            return true;
+        }
 
     }
 }

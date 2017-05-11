@@ -41,12 +41,10 @@
         <ca.danielw.indiehackersreader.NoDefaultSpinner
             android:id="@+id/revenue_spinner"
             android:layout_width="wrap_content"
-            android:prompt="@string/rev_prompt"
             android:layout_height="wrap_content"/>
 
         <ca.danielw.indiehackersreader.NoDefaultSpinner
             android:id="@+id/categories_spinner"
-            android:prompt="@string/cat_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
