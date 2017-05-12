@@ -19,9 +19,10 @@ import android.widget.Toast;
 import com.facebook.stetho.Stetho;
 
 public class MainActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener{
+    public static final String DETAIL_URL = "DETAIL_URL";
+
     private WebView webView;
     private final String BASE_URL = "https://www.indiehackers.com/businesses";
-    private final String DETAIL_URL = "DETAIL_URL";
     private Spinner revenueFilter;
     private Spinner catFilter;
 
@@ -100,16 +101,30 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            if (request.toString().equals(BASE_URL)) {
+            Log.e("Hello", "hi");
+
+
+            Log.e("Hello", request.toString() + request.getUrl().toString());
+
+
+            if (request.getUrl().toString().equals(BASE_URL)) {
                 // This is my web site, so do not override; let my WebView load the page
                 return false;
             }
-            //Render clicks in another webview in the Detail Acitivity
-            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-            intent.putExtra(DETAIL_URL, request.toString());
-            startActivity(intent);
+
+            Log.e("Hello", request.toString());
             return true;
         }
 
+        @Override
+        public void onLoadResource(WebView view, String url) {
+            if(url.startsWith(BASE_URL)){
+                Log.e("Hello", url);
+                //Render clicks in another webview in the Detail Acitivity
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra(DETAIL_URL, url);
+                startActivity(intent);
+            }
+        }
     }
 }
