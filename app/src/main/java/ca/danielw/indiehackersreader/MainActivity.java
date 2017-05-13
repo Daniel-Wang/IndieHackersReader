@@ -105,14 +105,19 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         @SuppressWarnings("deprecation")
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
+            if(url.equals(BASE_URL)) {
+                view.loadUrl(url);
+            }
             return true;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            view.loadUrl(request.getUrl().toString());
+            String url = request.getUrl().toString();
+            if(url.equals(BASE_URL)){
+                view.loadUrl(url);
+            }
             return true;
         }
 
@@ -125,9 +130,7 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         @Override
         public void onLoadResource(WebView view, String url) {
             Log.e("Hello", url);
-            if(url.equals(BASE_URL)){
-                return;
-            }
+
             if(url.endsWith(MARKDOWN_SUFFIX)){
                 Log.e("Hello", url);
                 //Render clicks in another webview in the Detail Acitivity
