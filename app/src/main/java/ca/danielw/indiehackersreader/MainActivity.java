@@ -1,13 +1,16 @@
 package ca.danielw.indiehackersreader;
 
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Adapter;
@@ -18,11 +21,15 @@ import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener{
     public static final String DETAIL_URL = "DETAIL_URL";
 
     private WebView webView;
     private final String BASE_URL = "https://www.indiehackers.com/businesses";
+    private final String MARKDOWN_SUFFIX = ".md";
     private Spinner revenueFilter;
     private Spinner catFilter;
 
@@ -67,6 +74,7 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
 
         webView = (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
         webView.setWebViewClient(new MyWebViewClient());
 
@@ -93,6 +101,21 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
     }
 
     private class MyWebViewClient extends WebViewClient{
+
+        @SuppressWarnings("deprecation")
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+
+        @TargetApi(Build.VERSION_CODES.N)
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            view.loadUrl(request.getUrl().toString());
+            return true;
+        }
+
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
@@ -100,31 +123,43 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         }
 
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            Log.e("Hello", "hi");
-
-
-            Log.e("Hello", request.toString() + request.getUrl().toString());
-
-
-            if (request.getUrl().toString().equals(BASE_URL)) {
-                // This is my web site, so do not override; let my WebView load the page
-                return false;
-            }
-
-            Log.e("Hello", request.toString());
-            return true;
-        }
-
-        @Override
         public void onLoadResource(WebView view, String url) {
-            if(url.startsWith(BASE_URL)){
+            Log.e("Hello", url);
+            if(url.equals(BASE_URL)){
+                return;
+            }
+            if(url.endsWith(MARKDOWN_SUFFIX)){
                 Log.e("Hello", url);
                 //Render clicks in another webview in the Detail Acitivity
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra(DETAIL_URL, url);
-                startActivity(intent);
+                URL mUrl = null;
+                try {
+                    mUrl = new URL(url);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+
+                if(mUrl != null) {
+                    //Parse the .md url to the actual url
+                    String[] parts =  mUrl.getPath().split("/");
+                    String realUrl = BASE_URL + "/" +parts[3].substring(0, parts[3].length() - 3);
+                    Log.e("Test", realUrl);
+                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    intent.putExtra(DETAIL_URL, realUrl);
+                    startActivity(intent);
+                }
             }
+        }
+
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            return super.shouldInterceptRequest(view, request);
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            return super.shouldInterceptRequest(view, url);
         }
     }
 }
