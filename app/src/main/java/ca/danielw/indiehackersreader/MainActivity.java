@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -105,8 +106,10 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         @SuppressWarnings("deprecation")
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Log.e("LOL", "HIIIIII");
             if(url.equals(BASE_URL)) {
                 view.loadUrl(url);
+                return false;
             }
             return true;
         }
@@ -114,17 +117,13 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         @TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            Log.e("LOL", "HIIIIII");
             String url = request.getUrl().toString();
             if(url.equals(BASE_URL)){
                 view.loadUrl(url);
+                return false;
             }
             return true;
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            //webView.loadUrl();
         }
 
         @Override
@@ -144,25 +143,13 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
                 if(mUrl != null) {
                     //Parse the .md url to the actual url
                     String[] parts =  mUrl.getPath().split("/");
-                    String realUrl = BASE_URL + "/" +parts[3].substring(0, parts[3].length() - 3);
+                    String realUrl = BASE_URL + "/" + parts[3].substring(0, parts[3].length() - 3);
                     Log.e("Test", realUrl);
                     Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                     intent.putExtra(DETAIL_URL, realUrl);
                     startActivity(intent);
                 }
             }
-        }
-
-        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-        @Override
-        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-            return super.shouldInterceptRequest(view, request);
-        }
-
-        @SuppressWarnings("deprecation")
-        @Override
-        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-            return super.shouldInterceptRequest(view, url);
         }
     }
 }

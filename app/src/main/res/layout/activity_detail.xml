@@ -4,13 +4,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     tools:context="ca.danielw.indiehackersreader.DetailActivity">
 
-    <WebView
-        android:id="@+id/detailWebView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:scrollbars="vertical">
 
-    </WebView>
+        <WebView
+            android:id="@+id/detailWebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </ScrollView>
+
 
 </LinearLayout>
