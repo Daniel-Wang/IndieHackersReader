@@ -31,6 +31,12 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
     private WebView webView;
     private final String BASE_URL = "https://www.indiehackers.com/businesses";
     private final String MARKDOWN_SUFFIX = ".md";
+
+//    private final String [] [] filters = new String[] [] {
+//            {"", }
+//    };
+
+
     private Spinner revenueFilter;
     private Spinner catFilter;
 
@@ -70,6 +76,9 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         revenueFilter.setAdapter(adpRev);
         catFilter.setAdapter(adpCat);
 
+        rev = "All Revenue";
+        cat = "All Categories";
+
         revenueFilter.setSelection(0);
         catFilter.setSelection(0);
 
@@ -86,14 +95,34 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String text = parent.getItemAtPosition(position).toString();
-        Log.e("Error", text);
-        if(parent.equals(adpRev)){
+        int adpId = parent.getId();
+        Log.e("INFO", cat + " " + rev);
+        if(adpId == R.id.revenue_spinner){
             rev = text;
         } else {
             cat = text;
         }
-        Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
+        Log.e("INFO", cat + " " + rev);
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("https")
+                .authority("www.indiehackers.com")
+                .appendPath("businesses");
 
+        if(cat.equals("All Categories") && rev.equals("All Revenue")){
+
+        } else if(rev.equals("All Revenue")){
+            builder.appendQueryParameter("categories", cat);
+        } else if(cat.equals("All Categories")){
+            builder.appendQueryParameter("revenue", rev);
+        } else {
+            builder.appendQueryParameter("categories", cat)
+                    .appendQueryParameter("revenue", rev);
+        }
+
+        String myUrl = builder.build().toString();
+        Log.e("This is the URL", myUrl);
+
+        webView.loadUrl(myUrl);
     }
 
     @Override
