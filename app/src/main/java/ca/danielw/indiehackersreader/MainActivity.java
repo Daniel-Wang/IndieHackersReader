@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
     private WebView webView;
     private final String BASE_URL = "https://www.indiehackers.com/businesses";
     private final String MARKDOWN_SUFFIX = ".md";
+    private final String ALL_REV = "All Revenue";
+    private final String ALL_CAT = "All Categories";
 
-//    private final String [] [] filters = new String[] [] {
-//            {"", }
-//    };
-
+    private final String cat_query = "categories";
+    private final String rev_query = "revenue";
 
     private Spinner revenueFilter;
     private Spinner catFilter;
@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         revenueFilter.setAdapter(adpRev);
         catFilter.setAdapter(adpCat);
 
-        rev = "All Revenue";
-        cat = "All Categories";
+        rev = ALL_REV;
+        cat = ALL_CAT;
 
         revenueFilter.setSelection(0);
         catFilter.setSelection(0);
@@ -108,19 +108,18 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
                 .authority("www.indiehackers.com")
                 .appendPath("businesses");
 
-        if(cat.equals("All Categories") && rev.equals("All Revenue")){
+        if(cat.equals(ALL_CAT) && rev.equals(ALL_REV)){
 
-        } else if(rev.equals("All Revenue")){
-            builder.appendQueryParameter("categories", cat);
-        } else if(cat.equals("All Categories")){
-            builder.appendQueryParameter("revenue", rev);
+        } else if(rev.equals(ALL_REV)){
+            builder.appendQueryParameter(cat_query, cat);
+        } else if(cat.equals(ALL_CAT)){
+            builder.appendQueryParameter(rev_query, rev);
         } else {
-            builder.appendQueryParameter("categories", cat)
-                    .appendQueryParameter("revenue", rev);
+            builder.appendQueryParameter(cat_query, cat)
+                    .appendQueryParameter(rev_query, rev);
         }
 
         String myUrl = builder.build().toString();
-        Log.e("This is the URL", myUrl);
 
         webView.loadUrl(myUrl);
     }
