@@ -3,6 +3,7 @@ package ca.danielw.indiehackersreader;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
@@ -17,9 +19,11 @@ import android.webkit.WebViewClient;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.eyalbira.loadingdots.LoadingDots;
 import com.facebook.stetho.Stetho;
 
 import java.net.MalformedURLException;
@@ -43,6 +47,9 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
     private String rev;
     private String cat;
 
+    private LinearLayout linearLayout;
+    private LoadingDots loadingDots;
+
     private ArrayAdapter<CharSequence> adpRev;
     ArrayAdapter<CharSequence> adpCat;
 
@@ -53,12 +60,18 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
 
         Stetho.initializeWithDefaults(this);
 
+        linearLayout = (LinearLayout) findViewById(R.id.main_layout);
+        loadingDots = (LoadingDots) findViewById(R.id.loading_bar);
+
         revenueFilter = (Spinner) findViewById(R.id.revenue_spinner);
         catFilter = (Spinner) findViewById(R.id.categories_spinner);
 
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
+
+        linearLayout.setVisibility(View.GONE);
+        loadingDots.setVisibility(View.VISIBLE);
 
 
         adpRev = ArrayAdapter.createFromResource(this, R.array.revenue_array,
@@ -83,9 +96,10 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         catFilter.setSelection(0);
 
         webView = (WebView) findViewById(R.id.webView);
-        webView.getSettings().setJavaScriptEnabled(true);
+//        webView.getSettings().setJavaScriptEnabled(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
+        webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new MyWebViewClient());
 
         webView.loadUrl(BASE_URL);
@@ -134,10 +148,12 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         @SuppressWarnings("deprecation")
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.e("LOL", "HIIIIII");
+            Log.e("LOL", "HIIIIII this is the url: " + url);
             if(url.equals(BASE_URL)) {
                 view.loadUrl(url);
                 return false;
+            } else {
+                startDetail(url);
             }
             return true;
         }
@@ -145,39 +161,51 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         @TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            Log.e("LOL", "HIIIIII");
             String url = request.getUrl().toString();
+            Log.e("LOL", "HIIIIII this is the url: " + url);
             if(url.equals(BASE_URL)){
                 view.loadUrl(url);
                 return false;
+            } else {
+                startDetail(url);
             }
             return true;
         }
 
+//        @Override
+//        public void onLoadResource(WebView view, String url) {
+//            Log.e("Hello", url);
+//
+//            if(url.endsWith(MARKDOWN_SUFFIX)){
+//                Log.e("Hello", url);
+//                //Render clicks in another webview in the Detail Acitivity
+//                URL mUrl = null;
+//                try {
+//                    mUrl = new URL(url);
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                if(mUrl != null) {
+//                    //Parse the .md url to the actual url
+//                    String[] parts =  mUrl.getPath().split("/");
+//                    String realUrl = BASE_URL + "/" + parts[3].substring(0, parts[3].length() - 3);
+//                    Log.e("Test", realUrl);
+//                    startDetail(realUrl);
+//                }
+//            }
+//        }
+
         @Override
-        public void onLoadResource(WebView view, String url) {
-            Log.e("Hello", url);
-
-            if(url.endsWith(MARKDOWN_SUFFIX)){
-                Log.e("Hello", url);
-                //Render clicks in another webview in the Detail Acitivity
-                URL mUrl = null;
-                try {
-                    mUrl = new URL(url);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-
-                if(mUrl != null) {
-                    //Parse the .md url to the actual url
-                    String[] parts =  mUrl.getPath().split("/");
-                    String realUrl = BASE_URL + "/" + parts[3].substring(0, parts[3].length() - 3);
-                    Log.e("Test", realUrl);
-                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                    intent.putExtra(DETAIL_URL, realUrl);
-                    startActivity(intent);
-                }
-            }
+        public void onPageFinished(WebView view, String url) {
+            linearLayout.setVisibility(View.VISIBLE);
+            loadingDots.setVisibility(View.GONE);
         }
+    }
+
+    private void startDetail(String url){
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra(DETAIL_URL, url);
+        startActivity(intent);
     }
 }

@@ -1,60 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+    android:gravity="center"
     android:paddingTop="8dp"
     android:background="@color/colorPrimaryDark"
     tools:context="ca.danielw.indiehackersreader.MainActivity">
 
-    <TextView
-        android:id="@+id/tvSummary"
-        android:textColor="#ffffff"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/summary_text"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textSize="26sp"/>
-
-    <ImageView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:src="@android:drawable/divider_horizontal_dark"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="2dp" />
-
     <LinearLayout
-        android:id="@+id/filterBar"
-        android:paddingBottom="16dp"
-        android:paddingLeft="8dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <ca.danielw.indiehackersreader.NoDefaultSpinner
-            android:id="@+id/revenue_spinner"
+        <TextView
+            android:id="@+id/tvSummary"
+            android:textColor="#ffffff"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/summary_text"
+            android:gravity="center"
+            android:padding="8dp"
+            android:textSize="26sp"/>
 
-        <ca.danielw.indiehackersreader.NoDefaultSpinner
-            android:id="@+id/categories_spinner"
+        <ImageView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:src="@android:drawable/divider_horizontal_dark"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="2dp" />
+
+        <LinearLayout
+            android:id="@+id/filterBar"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ca.danielw.indiehackersreader.NoDefaultSpinner
+                android:id="@+id/revenue_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ca.danielw.indiehackersreader.NoDefaultSpinner
+                android:id="@+id/categories_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/webView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
+            android:layout_height="wrap_content">
+        </WebView>
     </LinearLayout>
 
-    <WebView
-        android:id="@+id/webView"
+    <com.eyalbira.loadingdots.LoadingDots
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/loading_bar"
+        app:LoadingDots_dots_size="16dp"
+        app:LoadingDots_dots_space="12dp"
+        app:LoadingDots_dots_color="#308ce8"/>
 
-    </WebView>
 
 </LinearLayout>
