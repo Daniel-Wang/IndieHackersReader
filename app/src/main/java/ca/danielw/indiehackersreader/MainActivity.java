@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
     private final String cat_query = "categories";
     private final String rev_query = "revenue";
 
+    private String CUR_URL = BASE_URL;
+
     private Spinner revenueFilter;
     private Spinner catFilter;
 
@@ -96,11 +98,12 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         catFilter.setSelection(0);
 
         webView = (WebView) findViewById(R.id.webView);
-//        webView.getSettings().setJavaScriptEnabled(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new MyWebViewClient());
+
+//        webView.getSettings().setJavaScriptEnabled(true);
 
         webView.loadUrl(BASE_URL);
 
@@ -135,7 +138,12 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
 
         String myUrl = builder.build().toString();
 
-        webView.loadUrl(myUrl);
+
+        if(!myUrl.equals(CUR_URL)){
+            CUR_URL = myUrl;
+            webView.loadUrl(myUrl);
+            Log.e("times", "hi many times");
+        }
     }
 
     @Override
@@ -200,6 +208,19 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         public void onPageFinished(WebView view, String url) {
             linearLayout.setVisibility(View.VISIBLE);
             loadingDots.setVisibility(View.GONE);
+
+            webView.loadUrl("javascript:(function() { " +
+                    "document.getElementsByClassName('filters__content')[0].style.display='none'; " +
+                    "})()");
+
+            webView.loadUrl("javascript:(function() { " +
+                    "document.getElementsByClassName('ember-view businesses-hero')[0].style.display='none'; " +
+                    "})()");
+
+            webView.loadUrl("javascript:(function() { " +
+                    "document.getElementsByClassName('ember-view title-bar')[0].style.display='none'; " +
+                    "})()");
+
         }
     }
 

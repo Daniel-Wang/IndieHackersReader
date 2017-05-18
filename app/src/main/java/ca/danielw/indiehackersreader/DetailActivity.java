@@ -43,7 +43,9 @@ public class DetailActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
-
+                webView.loadUrl("javascript:(function() { " +
+                        "document.getElementsByClassName('title-bar__content')[0].style.display='none'; " +
+                        "})()");
             }
         });
         webView.setOnTouchListener(new View.OnTouchListener() {
