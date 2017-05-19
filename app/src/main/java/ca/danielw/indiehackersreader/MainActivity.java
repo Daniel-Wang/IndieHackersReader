@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new MyWebViewClient());
 
-//        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptEnabled(true);
 
         webView.loadUrl(BASE_URL);
 
@@ -206,6 +206,7 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            Log.e("page finished", "Counter");
             linearLayout.setVisibility(View.VISIBLE);
             loadingDots.setVisibility(View.GONE);
 
@@ -215,6 +216,7 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
 
             webView.loadUrl("javascript:(function() { " +
                     "document.getElementsByClassName('ember-view businesses-hero')[0].style.display='none'; " +
+                    "document.getElementsByClassName('ember-view businesses-hero')[0].style.height='0px'; "+
                     "})()");
 
             webView.loadUrl("javascript:(function() { " +
