@@ -103,8 +103,6 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new MyWebViewClient());
 
-        webView.getSettings().setJavaScriptEnabled(true);
-
         webView.loadUrl(BASE_URL);
 
     }
@@ -180,48 +178,29 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
             return true;
         }
 
-//        @Override
-//        public void onLoadResource(WebView view, String url) {
-//            Log.e("Hello", url);
-//
-//            if(url.endsWith(MARKDOWN_SUFFIX)){
-//                Log.e("Hello", url);
-//                //Render clicks in another webview in the Detail Acitivity
-//                URL mUrl = null;
-//                try {
-//                    mUrl = new URL(url);
-//                } catch (MalformedURLException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                if(mUrl != null) {
-//                    //Parse the .md url to the actual url
-//                    String[] parts =  mUrl.getPath().split("/");
-//                    String realUrl = BASE_URL + "/" + parts[3].substring(0, parts[3].length() - 3);
-//                    Log.e("Test", realUrl);
-//                    startDetail(realUrl);
-//                }
-//            }
-//        }
-
         @Override
         public void onPageFinished(WebView view, String url) {
             Log.e("page finished", "Counter");
             linearLayout.setVisibility(View.VISIBLE);
             loadingDots.setVisibility(View.GONE);
 
+            webView.getSettings().setJavaScriptEnabled(true);
+
             webView.loadUrl("javascript:(function() { " +
                     "document.getElementsByClassName('filters__content')[0].style.display='none'; " +
+                    "document.getElementsByClassName('ember-view businesses-list businesses-list--grid')[0].style.marginTop='0px'; " +
                     "})()");
 
             webView.loadUrl("javascript:(function() { " +
                     "document.getElementsByClassName('ember-view businesses-hero')[0].style.display='none'; " +
-                    "document.getElementsByClassName('ember-view businesses-hero')[0].style.height='0px'; "+
+                    "document.getElementsByClassName('title-bar-sticky-wrapper')[0].style.height='0px';" +
                     "})()");
 
             webView.loadUrl("javascript:(function() { " +
                     "document.getElementsByClassName('ember-view title-bar')[0].style.display='none'; " +
                     "})()");
+
+            webView.getSettings().setJavaScriptEnabled(false);
 
         }
     }

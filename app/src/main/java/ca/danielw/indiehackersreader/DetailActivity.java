@@ -2,9 +2,11 @@ package ca.danielw.indiehackersreader;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,14 +40,21 @@ public class DetailActivity extends AppCompatActivity {
         URL = intent.getStringExtra(MainActivity.DETAIL_URL);
 
         webView = (WebView) findViewById(R.id.detailWebView);
-//        webView.getSettings().setJavaScriptEnabled(true);
-//        webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient(){
             @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                Log.e("Started", "Counter");
+            }
+
+            @Override
             public void onPageFinished(WebView view, String url) {
+                Log.e("hmmm", "hi");
+                webView.getSettings().setJavaScriptEnabled(true);
                 webView.loadUrl("javascript:(function() { " +
                         "document.getElementsByClassName('title-bar__content')[0].style.display='none'; " +
+                        "document.getElementsByClassName('ember-view interview-footer')[0].style.display='none'; " +
                         "})()");
+
             }
         });
         webView.setOnTouchListener(new View.OnTouchListener() {
@@ -54,8 +63,8 @@ public class DetailActivity extends AppCompatActivity {
                 return (event.getAction() == MotionEvent.ACTION_MOVE);
             }
         });
-
         webView.loadUrl(URL);
+
         loadingDots.setVisibility(View.GONE);
         scrollView.setVisibility(View.VISIBLE);
     }
