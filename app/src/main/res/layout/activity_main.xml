@@ -71,7 +71,7 @@
         android:id="@+id/loading_bar"
         app:LoadingDots_dots_size="16dp"
         app:LoadingDots_dots_space="12dp"
-        app:LoadingDots_dots_color="#308ce8"/>
+        app:LoadingDots_dots_color="@color/blue"/>
 
 
 </LinearLayout>

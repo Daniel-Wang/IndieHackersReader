@@ -2,10 +2,16 @@ package ca.danielw.indiehackersreader;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyalbira.loadingdots.LoadingDots;
@@ -103,7 +110,26 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new MyWebViewClient());
 
-        webView.loadUrl(BASE_URL);
+        if(isNetworkAvailable()){
+            webView.loadUrl(BASE_URL);
+        } else {
+            Snackbar snackbar = Snackbar
+                    .make(linearLayout, "No Internet Connection", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(isNetworkAvailable()){
+                                webView.loadUrl(BASE_URL);
+                            }
+                        }
+                    });
+
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(ContextCompat.getColor(this, R.color.blue));
+            snackbar.show();
+        }
 
     }
 
@@ -111,13 +137,13 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String text = parent.getItemAtPosition(position).toString();
         int adpId = parent.getId();
-        Log.e("INFO", cat + " " + rev);
+//        Log.e("INFO", cat + " " + rev);
         if(adpId == R.id.revenue_spinner){
             rev = text;
         } else {
             cat = text;
         }
-        Log.e("INFO", cat + " " + rev);
+//        Log.e("INFO", cat + " " + rev);
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("https")
                 .authority("www.indiehackers.com")
@@ -140,7 +166,7 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         if(!myUrl.equals(CUR_URL)){
             CUR_URL = myUrl;
             webView.loadUrl(myUrl);
-            Log.e("times", "hi many times");
+//            Log.e("times", "hi many times");
         }
     }
 
@@ -154,7 +180,7 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         @SuppressWarnings("deprecation")
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.e("LOL", "HIIIIII this is the url: " + url);
+//            Log.e("LOL", "HIIIIII this is the url: " + url);
             if(url.equals(BASE_URL)) {
                 view.loadUrl(url);
                 return false;
@@ -168,7 +194,7 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             String url = request.getUrl().toString();
-            Log.e("LOL", "HIIIIII this is the url: " + url);
+//            Log.e("LOL", "HIIIIII this is the url: " + url);
             if(url.equals(BASE_URL)){
                 view.loadUrl(url);
                 return false;
@@ -180,7 +206,7 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            Log.e("page finished", "Counter");
+//            Log.e("page finished", "Counter");
             linearLayout.setVisibility(View.VISIBLE);
             loadingDots.setVisibility(View.GONE);
 
@@ -209,5 +235,12 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent.putExtra(DETAIL_URL, url);
         startActivity(intent);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

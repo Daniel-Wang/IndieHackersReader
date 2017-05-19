@@ -41,14 +41,10 @@ public class DetailActivity extends AppCompatActivity {
 
         webView = (WebView) findViewById(R.id.detailWebView);
         webView.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                Log.e("Started", "Counter");
-            }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.e("hmmm", "hi");
+//                Log.e("hmmm", "hi");
                 webView.getSettings().setJavaScriptEnabled(true);
                 webView.loadUrl("javascript:(function() { " +
                         "document.getElementsByClassName('title-bar__content')[0].style.display='none'; " +
