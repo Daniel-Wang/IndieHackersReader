@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Indie Hackers Reader</string>
+    <string name="app_name">Reader for Indie Hackers</string>
     <string name="title_text">INDIE HACKERS</string>
     <string name="summary_text">Learn from profitable businesses and side projects.</string>
     <string name="rev_prompt">Revenue</string>

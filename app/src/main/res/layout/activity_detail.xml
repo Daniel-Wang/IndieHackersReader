@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@color/colorPrimaryDark"
-    tools:context="ca.danielw.indiehackersreader.DetailActivity">
+    tools:context="ca.danielw.readerindiehackers.DetailActivity">
 
     <com.eyalbira.loadingdots.LoadingDots
         android:layout_width="wrap_content"

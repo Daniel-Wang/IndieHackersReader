@@ -1,17 +1,11 @@
-package ca.danielw.indiehackersreader;
+package ca.danielw.readerindiehackers;
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ScrollView;

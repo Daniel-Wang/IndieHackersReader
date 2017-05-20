@@ -1,4 +1,4 @@
-package ca.danielw.indiehackersreader;
+package ca.danielw.readerindiehackers;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -1,4 +1,4 @@
-package ca.danielw.indiehackersreader;
+package ca.danielw.readerindiehackers;
 
 /**
  * Created by dwang on 5/6/17.
