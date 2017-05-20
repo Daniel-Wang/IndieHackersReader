@@ -45,12 +45,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ca.danielw.readerindiehackers.NoDefaultSpinner
+            <Spinner
                 android:id="@+id/revenue_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <ca.danielw.readerindiehackers.NoDefaultSpinner
+            <Spinner
                 android:id="@+id/categories_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

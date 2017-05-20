@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity  implements AdapterView.OnIt
 
     private WebView webView;
     private final String BASE_URL = "https://www.indiehackers.com/businesses";
-    private final String MARKDOWN_SUFFIX = ".md";
     private final String ALL_REV = "All Revenue";
     private final String ALL_CAT = "All Categories";
 
